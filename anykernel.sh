@@ -163,9 +163,10 @@ if [ -f "$APK_FILE" ]; then
     ui_print " Tìm thấy tệp: $APK_NAME"
     ui_print " Bạn có muốn cài đặt ứng dụng này không?"
     ui_print " Install $APK_NAME?"
-    ui_print "-----------------"
+    ui_print "-------VI--------"
     ui_print " Phím Tăng âm lượng: Bỏ qua cài đặt"
     ui_print " Phím Giảm âm lượng: Cài đặt ứng dụng"
+    ui_print "-------EN--------"
     ui_print " Volume UP: Skip installation"
     ui_print " Volume DOWN: Install app"
     ui_print "============="
@@ -179,8 +180,14 @@ if [ -f "$APK_FILE" ]; then
     case "$key_click" in
         "KEY_VOLUMEDOWN")
             ui_print " Đang tiến hành cài đặt $APK_NAME..."
-            if [ "$BOOTMODE" = true ]; then
-                # Môi trường hệ thống (KernelSU / Magisk App / FKM)
+            
+            # Tự động quét tiến trình Zygote để nhận diện chính xác môi trường Android
+            IS_BOOTED=false
+            ps | grep zygote | grep -v grep >/dev/null && IS_BOOTED=true
+            $IS_BOOTED || ps -A 2>/dev/null | grep zygote | grep -v grep >/dev/null && IS_BOOTED=true
+
+            if [ "$IS_BOOTED" = true ]; then
+                # Môi trường hệ thống đang chạy (KernelSU / Magisk App / FKM)
                 pm install -r "$APK_FILE" >/dev/null 2>&1
                 if [ $? -eq 0 ]; then
                     ui_print " ✅ Cài đặt thành công! (Installation complete!)"
