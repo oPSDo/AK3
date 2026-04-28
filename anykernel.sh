@@ -1,11 +1,11 @@
 ### AnyKernel3 Ramdisk Mod Script
-## KernelSU with SUSFS By Numbersf
+## KernelSU with SUSFS By oPSDo
 ## osm0sis @ xda-developers
 
 ### AnyKernel setup
 # global properties
 properties() { '
-kernel.string=OnePlus Kernel by Numbersf
+kernel.string=OKI Kernel by p0s3id0n (Powered by GitHub@oPSDo)
 do.devicecheck=0
 do.modules=0
 do.systemless=0
@@ -45,19 +45,19 @@ ui_print "  -> ksu_supported: $ksu_supported"
 $ksu_supported || abort "  -> Non-GKI device, abort."
 
 # =============
-# 检测 Root 方式 (Magisk 检测)
+# Kiểm tra phương thức Root (Phát hiện Magisk)
 # =============
 if [ -d /data/adb/magisk ] || [ -f /sbin/.magisk ]; then
     ui_print "============="
-    ui_print " 检测到 Magisk 或残留文件"
-    ui_print " 在此情况下刷写内核可能会导致设备变砖"
-    ui_print " 是否要继续安装？"
+    ui_print " Phát hiện Magisk hoặc các tệp tàn dư"
+    ui_print " Flash kernel trong tình trạng này có thể gây brick thiết bị"
+    ui_print " Bạn có muốn tiếp tục cài đặt không?"
     ui_print " Magisk has been detected (or residual files)."
     ui_print " Flashing the kernel may brick your device"
     ui_print " Do you want to continue?"
     ui_print "-----------------"
-    ui_print " 音量上键：退出脚本 (推荐)"
-    ui_print " 音量下键：继续安装 (风险自负)"
+    ui_print " Phím Tăng âm lượng: Thoát script (Khuyên dùng)"
+    ui_print " Phím Giảm âm lượng: Tiếp tục cài đặt (Tự chịu rủi ro)"
     ui_print " Volume UP: Exit script (recommended)"
     ui_print " Volume DOWN: Continue installation (at your own risk)"
     ui_print "============="
@@ -70,24 +70,24 @@ if [ -d /data/adb/magisk ] || [ -f /sbin/.magisk ]; then
 
     case "$key_click" in
         "KEY_VOLUMEUP")
-            ui_print " 您选择了退出脚本，已安全终止安装。"
+            ui_print " Bạn đã chọn thoát. Quá trình cài đặt đã được hủy an toàn."
             ui_print " You chose to exit. Installation aborted safely."
             exit 0
             ;;
         "KEY_VOLUMEDOWN")
-            ui_print " 您选择了继续安装，请注意风险!"
+            ui_print " Bạn đã chọn tiếp tục cài đặt. Vui lòng chú ý rủi ro!"
             ui_print " You chose to continue installation. Proceed with caution!"
             ;;
         *)
-            ui_print " 未知按键输入，脚本已退出。"
+            ui_print " Phím bấm không hợp lệ. Đang thoát script."
             ui_print " Unknown key input. Exiting script."
             exit 1
             ;;
     esac
 fi
 
-ui_print "开始安装内核..."
-ui_print "Powered by GitHub@Numbersf (Aq1298 & 咿云冷雨)"
+ui_print "Bắt đầu cài đặt kernel..."
+ui_print "Powered by GitHub@oPSDo"
 
 split_boot
 if [ -f "split_img/ramdisk.cpio" ]; then
@@ -98,7 +98,7 @@ else
 fi
 
 # =============
-# SUSFS 模块安装
+# Cài đặt Module SUSFS
 # =============
 if [ -f "$AKHOME/ksu_module_susfs_1.5.2+_Release.zip" ]; then
     MODULE_PATH="$AKHOME/ksu_module_susfs_1.5.2+_Release.zip"
@@ -114,11 +114,11 @@ fi
 if [ -n "$MODULE_PATH" ]; then
     KSUD_PATH="/data/adb/ksud"
     ui_print "============="
-    ui_print " 是否安装 SUSFS 模块？"
+    ui_print " Bạn có muốn cài đặt module SUSFS không?"
     ui_print " Install susfs4ksu Module?"
     ui_print "-----------------"
-    ui_print " 音量上键：跳过安装"
-    ui_print " 音量下键：安装模块"
+    ui_print " Phím Tăng âm lượng: Bỏ qua cài đặt"
+    ui_print " Phím Giảm âm lượng: Cài đặt module"
     ui_print " Volume UP: Skip installation"
     ui_print " Volume DOWN: Install module"
     ui_print "============="
@@ -132,22 +132,22 @@ if [ -n "$MODULE_PATH" ]; then
     case "$key_click" in
         "KEY_VOLUMEDOWN")
             if [ -f "$KSUD_PATH" ]; then
-                ui_print " 正在安装 SUSFS 模块..."
+                ui_print " Đang cài đặt module SUSFS..."
                 ui_print " Installing SUSFS Module..."
                 /data/adb/ksud module install "$MODULE_PATH"
-                ui_print " 安装完成!"
+                ui_print " Cài đặt hoàn tất!"
                 ui_print " Installation complete!"
             else
-                ui_print " 未找到 KSUD，跳过安装。"
+                ui_print " Không tìm thấy KSUD, bỏ qua cài đặt."
                 ui_print " KSUD not found. Skipping installation."
             fi
             ;;
         "KEY_VOLUMEUP")
-            ui_print " 已跳过 SUSFS 模块安装。"
+            ui_print " Đã bỏ qua quá trình cài đặt module SUSFS."
             ui_print " Skipped SUSFS Module installation."
             ;;
         *)
-            ui_print " 未知按键输入，已跳过 SUSFS 模块安装。"
+            ui_print " Phím bấm không hợp lệ. Đã bỏ qua cài đặt module SUSFS."
             ui_print " Unknown key input. Skipped SUSFS Module installation."
             ;;
     esac
